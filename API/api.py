@@ -2,7 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 from urllib.parse import urlparse
 import sqlite3
-import dbManager
+import dbManager as dbManager
 
 database = dbManager.Database("database.db")
 
