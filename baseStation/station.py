@@ -1,16 +1,78 @@
 import nmap
+import requests
+import json
+import time
 
 NUM_STATIONS = 1
-STATION_NAME = "SBBLT2_1"
+STATION_NAME = "SBBLT2-1"
+STATION_ROOM = "SBBLT2"
+API_ADDRESS = "http://127.0.0.1:8000"
 
 class Station:
     def __init__(self, name) -> None:
         self.name = name
+
+        self.setup()
+
         self.loop()
+
+    def requestCreateRoom(self):
+        print("We need to create a new room")
+        print(f"Room Name: {STATION_ROOM}")
+        roomCapacity = int(input("Room Capacity:  "))
+        lat = float(input("Room Latitude:  "))
+        long = float(input("Room Latitude:  "))
+        
+        data = {"name": STATION_ROOM,
+                "latitude": lat,
+                "longitude":long,
+                "capacity":roomCapacity}
+
+        response = requests.post(API_ADDRESS + "/addRoom", json=data)
+
+        print(response.text)
+    
+    def setup(self):
+        ## First check if room exists
+        response = requests.get(API_ADDRESS+"/getRooms")
+        response = json.loads(response.text)
+        print(response)
+        roomExists = False
+        for room in response:
+            name = room.get("RoomName")
+            if name == STATION_ROOM:
+                roomExists = True
+                self.room = room
+                break
+        
+        if not roomExists:
+            print("ERROR: Room does not exist.")
+
+            self.requestCreateRoom()
+
+
+        ## Now register this station with the API
+        reqData = {"name": STATION_NAME,
+                   "roomName": STATION_ROOM}
+        response = requests.post(API_ADDRESS+"/addStation", json=reqData)
+        print(response.status_code)
+        print(response.text)
+
+        ## Now find our station id number        getStationByName
+        response = requests.get(API_ADDRESS + f"/getStationByName/{STATION_NAME}")
+        print(response.text)
+        print(response.reason)
+        self.station = json.loads(response.text)
+        print(self.station)
     
     def loop(self):
         numDevices = self.count_connected_devices()
-
+        data = {"numDevices": numDevices}
+        response = requests.post(API_ADDRESS + f"/setNumDevices/{self.station.get('StationID')}", json=data)
+        print(response.text)
+        print(data)
+        
+        time.sleep(10)
 
 
     def count_connected_devices(self):
