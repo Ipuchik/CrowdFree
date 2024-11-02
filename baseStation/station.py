@@ -6,7 +6,9 @@ import time
 NUM_STATIONS = 1
 STATION_NAME = "SBBLT2-1"
 STATION_ROOM = "SBBLT2"
-API_ADDRESS = "http://127.0.0.1:8000"
+API_ADDRESS = "http://ec2-35-179-130-110.eu-west-2.compute.amazonaws.com"#"http://127.0.0.1:8000"
+
+ADDRESS_RANGE='172.16.17.59/22'#192.168.1.0/24
 
 class Station:
     def __init__(self, name) -> None:
@@ -14,14 +16,15 @@ class Station:
 
         self.setup()
 
-        self.loop()
+        while True:
+            self.loop()
 
     def requestCreateRoom(self):
         print("We need to create a new room")
         print(f"Room Name: {STATION_ROOM}")
         roomCapacity = int(input("Room Capacity:  "))
         lat = float(input("Room Latitude:  "))
-        long = float(input("Room Latitude:  "))
+        long = float(input("Room Longitude:  "))
         
         data = {"name": STATION_ROOM,
                 "latitude": lat,
@@ -81,7 +84,7 @@ class Station:
     
         # Define the network range to scan
         # Change '192.168.1.0/24' if your IP range is different
-        network_range = '192.168.1.0/24'
+        network_range = ADDRESS_RANGE
     
         print("Scanning network, please wait...")
         nm.scan(hosts=network_range, arguments='-sn')
@@ -96,4 +99,3 @@ class Station:
 
 
 scanner = Station(STATION_NAME)
-scanner.count_connected_devices()

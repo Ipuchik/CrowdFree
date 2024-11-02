@@ -61,7 +61,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         elif path_parts[0] == "getStationByName" and len(path_parts) == 2:
             stationName = path_parts[1]
             self.getStationByName(stationName)
-        elif path_parts[0] == 'getRoomInfo' and len(path_parts) == 2:
+        elif path_parts[0] == 'getNumDevices' and len(path_parts) == 2:
             room_id = path_parts[1]
             self.getRoomFill(room_id)
         else:
