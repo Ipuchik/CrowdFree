@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS ROOM (
     RoomName TEXT UNIQUE,
     RoomLat REAL,
     RoomLong REAL,
-    RoomCapacity INTEGER
+    RoomCapacity INTEGER,
+    RoomAverage REAL
 );"""
 CREATE_STATION_TABLE = """
 CREATE TABLE IF NOT EXISTS STATION (
@@ -60,12 +61,12 @@ class Database:
 
         return result
 
-    def addRoom(self, roomName, roomLat, roomLong, roomCapacity):
+    def addRoom(self, roomName, roomLat, roomLong, roomCapacity, roomAverage):
         conn = sqlite3.connect(self.dbFile)
         cursor = conn.cursor()
 
-        cursor = cursor.execute(f"""INSERT INTO ROOM (RoomName, RoomLat, RoomLong, RoomCapacity) 
-                                VALUES (?,?,?,?)""", (roomName, roomLat, roomLong, roomCapacity))
+        cursor = cursor.execute(f"""INSERT INTO ROOM (RoomName, RoomLat, RoomLong, RoomCapacity, RoomAverage) 
+                                VALUES (?,?,?,?,?)""", (roomName, roomLat, roomLong, roomCapacity, roomAverage))
         cursor.close()
         conn.commit()
         conn.close()
@@ -101,7 +102,8 @@ class Database:
                 "RoomName": room[1],
                 "RoomLat": room[2],
                 "RoomLong": room[3],
-                "RoomCapacity": room[4]
+                "RoomCapacity": room[4],
+                "RoomAverageDevices": room[5]
             }
             res.append(room)
 
