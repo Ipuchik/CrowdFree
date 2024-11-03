@@ -75,6 +75,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         lat = roomInfo.get("latitude")
         long = roomInfo.get("longitude")
         capacity = roomInfo.get("capacity")
+        averageDevices = roomInfo.get("AverageDevices")
 
         if not lat or not long:
             lat = 0
@@ -91,7 +92,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(response).encode())
             return
         
-        database.addRoom(name, lat, long, capacity)
+        database.addRoom(name, lat, long, capacity, averageDevices)
         
         self.send_response(201)
         self.send_header('Content-type', 'application/json')
