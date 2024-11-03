@@ -6,7 +6,7 @@ import time
 NUM_STATIONS = 1
 STATION_NAME = "SBBLT2-1"
 STATION_ROOM = "SBBLT2"
-API_ADDRESS = "http://127.0.0.1:8000"#"http://ec2-18-132-37-221.eu-west-2.compute.amazonaws.com"#"http://127.0.0.1:8000"
+API_ADDRESS = "http://ec2-18-132-37-221.eu-west-2.compute.amazonaws.com"#"http://127.0.0.1:8000"
 
 ADDRESS_RANGE='172.16.17.59/22'#192.168.1.0/24
 

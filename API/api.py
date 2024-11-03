@@ -4,8 +4,9 @@ from urllib.parse import urlparse
 import sqlite3
 import dbManager as dbManager
 
-database = dbManager.Database("database.db")
+PORT = 80
 
+database = dbManager.Database("database.db")
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def getRooms(self):
@@ -196,4 +197,4 @@ def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=80
     httpd.serve_forever()
 
 if __name__ == '__main__':
-    run()
+    run(port=PORT)
